@@ -1,0 +1,116 @@
+DeepOF GUI is a graphical user interface designed to facilitate the analysis of animal behavior using DeepLabCut and the deepOF extension. 
+It allows users to preprocess data, analyze behavior, and visualize results interactively.
+
+Getting Started:
+
+Installation:
+
+Ensure you have anaconda installed.
+Ensure you have prepared the deeplabcut and deepof environments (it is explained how to do so on their website in the references at the bottom of this doc).
+Ensure Python 3.8 or later is installed on your system.
+Ensure that all the packages are installed.
+If not, install required dependencies via pip in command prompt:
+
+>>> conda activate deepof
+>>> pip install [missing package]
+
+
+Launching deepof:
+
+Navigate to the application directory or desktop and double click the 'deepof.bat' file
+or run the application by executing:
+
+>>> python app.py
+
+After running deeplabcut, please move the final .h5 tables and .mp4 videos to the tables and videos folders respecitvely.
+These tables and videos should both be in the "videos" folder of your deeplabcut project.
+
+When running deepof after clicking 'start deepof' a window will popup asking you to select the arena boundaries, the first segment
+should be the longest side of your arena (unless it is a round arena).
+
+Main Features:
+
+Start DeepOF will take the data in the videos and tables folders and make several excels documents of behavioral data you can analyse.
+Preprocess Data: Convert raw data from Deepof into a structured format suitable for further analysis. By default, this is done when clicking Start deepof. 
+This will give two excel files: one with the frequencies of behaviors and one with the total time spent doing each behavior.
+Open Project Folder: Access the project folder directly through the GUI.
+Open DeepLabCut: Launch the DeepLabCut environment directly from the GUI for manual corrections or further configurations.
+Using the Configuration File:
+
+The configuration file (config.yaml) is crucial for specifying the parameters and paths used by DeepLabCut and deepOF. Here’s how to use and modify it:
+
+Click on the button that says "open config file".
+
+Location: The default location is within the project directory. Ensure the file is named config.yaml.
+
+Parameters:
+project_path: Path where the project files are stored.
+video_path: Directory containing video files to analyze.
+table_path: Directory where the output tables should be saved.
+preprocess_data: True by default, change to False if you don't want to preprocess data for analysis after deepof finishes running.
+arena: How the arena boundaries will be defined, 'polygonal-manual' by default.
+video_scale: Length of the cage in mm, it should be the length of the first segment you draw when drawing the arena.
+exp_conditions: (Optional) Define experimental conditions if applicable. Each experiment is one of the videos.
+They should be in a dictionary format like so:
+	exp_conditions:
+		experiment1: condition1
+		experiment2: condition2
+
+Ensure all paths are absolute or relative to the config file's location.
+
+
+Editing:
+Modify the values as needed.
+Save your changes before running the application.
+
+Troubleshooting:
+Application doesn't start: Check Python and dependencies are correctly installed. Verify all required files are in place.
+Errors related to paths or files: Ensure all paths in the config.yaml are correct and accessible.
+Processing errors: Check the console or log output for specific error messages. Ensure the data format matches expected input specifications.
+
+DeepLabCut (complete guide, you can skip to 5 if using this gui):
+
+1.	Download anaconda
+
+2.	Install deeplabcut by this code  pip install "deeplabcut[gui]" in your anaconda terminal
+
+3.	Type in conda: conda activate deeplabcut
+
+4.	Type: python -m deeplabcut
+
+5.	Then in deeplabcut, start new project, follow instructions
+
+6.	Import videos, mp4, avi etc
+
+7.	Select: select the directory where your project will be created, copy videos (you can keep them there in the directory)
+
+8.	You can use multi animal if needed
+
+9.	Should say ‘project loaded’ (you can check in the terminal, something like ‘traceback’ is an error)
+
+10.	In ‘manage project’ you need to edit the configuration: 
+-	choose the number of individuals (can right click on the individuals to delete or insert, there are 3 by default) 
+-	choose the bodyparts to label, there are several conventions, the most detailed ones described on the DeepOF website has 14 points (example on the drawing further below)
+-	change the skeleton: add the different connections between bodyparts, for example: tail_1 + tail_2 or spine_1 + spine_2
+-	can change the number of frames to be labeled, usually keep 20 by default
+
+	1.   Go to ‘extract frames’ choose the video file you want to extract the frames from and press extract frames. A subdirectory called ‘labeled-data’ should appear in the projet folder. 
+(If you struggle to differentiate the mice like I did, find the framerate of the video - 25 in our case, and divide the frames' number by the framerate to get the time at which each frame appears in the video 
+- then you can watch the whole video and say which mouse is which for each frame as they appear in the video)
+	
+	2.   Go to ‘label frames’ and click label frames then select the folder that contains the frames to label (same name as video file). This will open the Napari software in which you can label the selected frames.
+
+13.	The four buttons on the top left are used to manage the labels :   the second one is to place the label (you can still zoom in and move around by dragging and clicking) the one on the right is to select dots, 
+to move existing ones or to delete some by clicking on the first button
+On the bottom left you can select the current label and its corresponding animal (it moves to the next automatically when placing a label) 
+Don’t hesitate to skip a label if it is not visible. Save with ctrl+s
+
+ 
+14.	Go to ‘label-frames’ and click ‘check frames’ and a new subdirectory in the labeled-data file containing the labeled frames
+After this step go to step 20 to train network
+
+Author: Max Carvalho
+References: 
+	https://deepof.readthedocs.io/en/latest/index.html 
+	https://www.mackenziemathislab.org/deeplabcut
+Contact: max.carvalho@epfl.ch | +41783073403
